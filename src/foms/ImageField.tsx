@@ -1,9 +1,13 @@
 import { ChangeEvent, useState } from "react";
 import { toBase64 } from '../helpers/fileHelpers';
+import { FormikContext, useFormikContext } from "formik";
 
 export default function ImageField(props: imageFieldProps) {
 
     const [imageBase64, setImageBase64] = useState('');
+    const [imageUrl, setImageUrl] = useState(props.imageUrl);
+    const { values } = useFormikContext<any>();
+
     const divStyle = { marginTop: '10px' };
     const imageStyle = { width: '450px' }
 
@@ -16,20 +20,14 @@ export default function ImageField(props: imageFieldProps) {
                         setImageBase64(base64Representation);
                     })
                     .catch(error => console.error(error));
+                setImageUrl('');
+                values[props.field] = file;
             }
             else {
                 setImageBase64('');
             }
         }
     }
-
-    // const toBase64 = (file: File) => {
-    //     return new Promise<string>((resolve, reject) => {
-    //         const reader = new FileReader();
-    //         reader.onload = () => resolve(reader.result as string);
-    //         reader.onerror = (error) => reject(error);
-    //     })
-    // }
 
     return (
 
@@ -47,6 +45,14 @@ export default function ImageField(props: imageFieldProps) {
                     </div>
                 </div> : null
             }
+
+            {
+                imageUrl ? <div>
+                    <div style={divStyle}>
+                        <img style={imageStyle} src={imageUrl} className="img-thumbnail rounded" alt="selcted image" />
+                    </div>
+                </div> : null
+            }
         </div>
     );
 }
@@ -54,4 +60,5 @@ export default function ImageField(props: imageFieldProps) {
 interface imageFieldProps {
     field: string;
     displayName: string;
+    imageUrl?: string;
 }

@@ -10,7 +10,10 @@ export default function EditActor() {
         <>
             <h3>Edit Actor</h3>
 
-            <ActorForm model={{ name: 'Tom Holland', dateOfBirth: new Date('3-28-2024') }}
+            <ActorForm model={{
+                name: 'Tom Holland', dateOfBirth: new Date('3-28-2024')
+                , pictureUrl: 'https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcS0BoHXyTC6fiXdFd39tpPeIOMlurZorAPiD6QJwS2yZVzFQGKQq_padu4AaV6Rug9qf35tExpQkObaYLY'
+            }}
                 onSubmit={async values => {
                     await new Promise(r => setTimeout(r, 3000));
                     console.log(values);

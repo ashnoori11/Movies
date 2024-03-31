@@ -17,7 +17,9 @@ export default function ActorForm(props: actorFormProps) {
                 <Form>
                     <TextField displayName='Name' field='name' placeholder="enter the Name" />
                     <DateField displayName='Date Of Birth' field='dateOfBirth' dateStringFormat={props.dateStringFormat} />
-                    <ImageField displayName='Picture' field='picture' />
+                    <ImageField displayName='Picture' field='picture'
+                        imageUrl={props.model.pictureUrl} />
+
                     <Button disabled={formikProps.isSubmitting}
                         className='btn btn-primary'
                         type='submit'>
