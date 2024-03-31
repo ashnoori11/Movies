@@ -5,6 +5,7 @@ import Button from '../utils/Button';
 import { Link } from 'react-router-dom';
 import DateField from '../foms/DateField';
 import ImageField from '../foms/ImageField';
+import MarkdownField from '../foms/MarkdownField';
 
 export default function ActorForm(props: actorFormProps) {
     return (
@@ -19,13 +20,13 @@ export default function ActorForm(props: actorFormProps) {
                     <DateField displayName='Date Of Birth' field='dateOfBirth' dateStringFormat={props.dateStringFormat} />
                     <ImageField displayName='Picture' field='picture'
                         imageUrl={props.model.pictureUrl} />
-
+                    <MarkdownField displayName='Biography' field='biography' />
                     <Button disabled={formikProps.isSubmitting}
-                        className='btn btn-primary'
+                        className='btn btn-primary mb-3'
                         type='submit'>
                         Save Changes
                     </Button>
-                    <Link to="/actors" className="btn btn-secondary">
+                    <Link to="/actors" className="btn btn-secondary mb-3">
                         Cancel
                     </Link>
                 </Form>
