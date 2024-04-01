@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import { genreDTO } from '../genres/genres.model';
 import { movieCreationDTO } from './movies.model';
 import { movieTheatersDTO } from '../movietheaters/movieTheater.model';
+import { actorMovieDTO } from '../actors/actors.model';
 
 export default function EditMovie() {
 
@@ -22,6 +23,10 @@ export default function EditMovie() {
 
     const nonSelectedMovieTheaters: movieTheatersDTO[] = [{ id: 1, name: 'SomeWhereOne' }, { id: 2, name: 'SomeWhereTwo' }];
     const selectedMovieTheaters: movieTheatersDTO[] = [{ id: 3, name: 'SomeWhereThree' }];
+
+    const selectedActors: actorMovieDTO[] = [
+        { id: 3, name: 'Eiza González', charcter: 'Auggie Salazar', picture: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages.wallpapersden.com%2Fimage%2Fdownload%2Feiza-gonzalez-variety-latino-portraits-2018_a2ZuZmqUmZqaraWkpJRoZmlurWZsa2s.jpg&f=1&nofb=1&ipt=2103f9c40ad8adf9670d2827548a73885339afe8850846bdd4947b69d0324cea&ipo=images' }
+    ];
 
     return (
         <>
@@ -49,7 +54,7 @@ export default function EditMovie() {
                 selectedGenres={selectedGenre}
                 selectedMovieTheaters={selectedMovieTheaters}
                 nonSelectedMovieTheaters={nonSelectedMovieTheaters}
-                selectedActors={[{ id: 3, name: 'Eiza González', charcter: 'Auggie Salazar', picture: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages.wallpapersden.com%2Fimage%2Fdownload%2Feiza-gonzalez-variety-latino-portraits-2018_a2ZuZmqUmZqaraWkpJRoZmlurWZsa2s.jpg&f=1&nofb=1&ipt=2103f9c40ad8adf9670d2827548a73885339afe8850846bdd4947b69d0324cea&ipo=images' }]}
+                selectedActors={selectedActors}
             />
         </>
     );
