@@ -3,6 +3,7 @@ import MovieForm from "./MovieForm";
 import * as Yup from 'yup';
 import { genreDTO } from '../genres/genres.model';
 import { movieCreationDTO } from './movies.model';
+import { movieTheatersDTO } from '../movietheaters/movieTheater.model';
 
 export default function EditMovie() {
 
@@ -19,12 +20,16 @@ export default function EditMovie() {
     const nonSelectedGenre: genreDTO[] = [{ id: 1, name: 'Comedy' }, { id: 2, name: 'Drama' }];
     const selectedGenre: genreDTO[] = [{ id: 3, name: 'action' }];
 
+    const nonSelectedMovieTheaters: movieTheatersDTO[] = [{ id: 1, name: 'SomeWhereOne' }, { id: 2, name: 'SomeWhereTwo' }];
+    const selectedMovieTheaters: movieTheatersDTO[] = [{ id: 3, name: 'SomeWhereThree' }];
+
     return (
         <>
             <h3>Edit Movie</h3>
             <MovieForm
                 model={{ ...theModel }}
-                onSubmit={async values => {
+                onSubmit={async (values, actions) => {
+
                     await new Promise(r => setTimeout(r, 3000));
                     console.log(values);
                     console.log(`the id is ${id}`);
@@ -32,15 +37,18 @@ export default function EditMovie() {
                 validationSchema={Yup.object({
                     title: Yup.string()
                         .required('this field is required')
-                        .firstLetterUppercase(),
-                    poster: Yup.mixed().test(
-                        "required",
-                        "Please select a file",
-                        (files: FileList) => files?.length > 0)
+                        .firstLetterUppercase()
+                    //     ,
+                    // poster: Yup.mixed().test(
+                    //     "required",
+                    //     "Please select a file",
+                    //     (files: FileList) => files?.length > 0)
                 })}
                 dateStringFormat={'en-CA'}
                 nonSelectedGenres={nonSelectedGenre}
                 selectedGenres={selectedGenre}
+                selectedMovieTheaters={selectedMovieTheaters}
+                nonSelectedMovieTheaters={nonSelectedMovieTheaters}
             />
         </>
     );

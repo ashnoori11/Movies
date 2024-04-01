@@ -5,13 +5,15 @@ export interface movieDTO {
 
 }
 
-export interface movieCreationDTO{
-    title:string;
-    inTheaters:boolean;
-    trailer:string;
-    releaseDate?:Date;
-    poster?:File;
-    posterURL?:string;
+export interface movieCreationDTO {
+    title: string;
+    inTheaters: boolean;
+    trailer: string;
+    releaseDate?: Date;
+    poster?: File;
+    posterURL?: string;
+    genreIds?: number[];
+    movieTheaterIds?: number[];
 }
 
 export interface landingPageDTO {

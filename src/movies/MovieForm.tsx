@@ -9,11 +9,17 @@ import CheckboxField from "../foms/CheckboxField";
 import MultipleSelector, { multipleSelectorModel } from "../foms/MultipleSelector";
 import { useState } from "react";
 import { genreDTO } from '../genres/genres.model';
+import { movieTheatersDTO } from '../movietheaters/movieTheater.model';
 
 export default function MovieForm(props: movieFormProps) {
 
     const [selectedGenres, setSelectedGenres] = useState(mapToModel(props.selectedGenres));
     const [nonSelectedGenres, setNonSelectedGenres] = useState(mapToModel(props.nonSelectedGenres));
+
+    const [selectedMovieTheaters, setSelectedMovieTheaters] = useState(mapToModel(props.selectedGenres));
+    const [nonSelectedMovieTheaters, setNonSelectedMovieTheaters] = useState(mapToModel(props.nonSelectedMovieTheaters));
+
+
     function mapToModel(items: { id: number, name: string }[]): multipleSelectorModel[] {
 
         return items.map(item => {
@@ -24,7 +30,11 @@ export default function MovieForm(props: movieFormProps) {
     return (
         <Formik
             initialValues={props.model}
-            onSubmit={props.onSubmit}
+            onSubmit={(values, actions) => {
+                values.genreIds = selectedGenres.map(item => item.key);
+                values.movieTheaterIds = selectedMovieTheaters.map(item => item.key);
+                props.onSubmit(values, actions);
+            }}
             validationSchema={props.validationSchema}
         >
             {(formikProps) => (
@@ -41,6 +51,14 @@ export default function MovieForm(props: movieFormProps) {
                         onChange={(selected, nonSelected) => {
                             setSelectedGenres(selected);
                             setNonSelectedGenres(nonSelected);
+                        }} />
+
+                    <MultipleSelector displayName="Theaters"
+                        nonSelected={nonSelectedMovieTheaters}
+                        selected={selectedMovieTheaters}
+                        onChange={(selected, nonSelected) => {
+                            setSelectedMovieTheaters(selected);
+                            setNonSelectedMovieTheaters(nonSelected);
                         }} />
 
                     <Button disabled={formikProps.isSubmitting} type="submit" className="btn btn-primary mb-3">
@@ -60,6 +78,8 @@ interface movieFormProps {
     dateStringFormat: string;
     selectedGenres: genreDTO[];
     nonSelectedGenres: genreDTO[];
+    nonSelectedMovieTheaters: movieTheatersDTO[];
+    selectedMovieTheaters: movieTheatersDTO[];
 }
 
 MovieForm.defaultProps = {
