@@ -53,7 +53,6 @@ export default function MultipleSelector(props: multipleSelectorProps) {
 
 interface multipleSelectorProps {
     displayName: string;
-    field: string;
     selected: multipleSelectorModel[];
     nonSelected: multipleSelectorModel[];
     onChange(selected: multipleSelectorModel[], nonSelected: multipleSelectorModel[]): void;

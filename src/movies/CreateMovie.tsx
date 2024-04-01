@@ -1,9 +1,11 @@
 import MovieForm from "./MovieForm";
 import * as Yup from 'yup';
+import { genreDTO } from '../genres/genres.model';
+import { movieCreationDTO } from './movies.model';
 
 export default function CreateMovie() {
 
-    const theModel = {
+    const theModel: movieCreationDTO = {
         title: '',
         inTheaters: false,
         trailer: '',
@@ -11,6 +13,9 @@ export default function CreateMovie() {
         poster: undefined,
         posterURL: undefined
     }
+
+    const nonSelectedGenres: genreDTO[] =
+        [{ id: 1, name: 'Comedy' }, { id: 2, name: 'Drama' }, { id: 3, name: 'action' }]
 
     return (
         <>
@@ -31,6 +36,8 @@ export default function CreateMovie() {
                     //     "Please select a file",
                     //     (files: FileList) => files?.length > 0)
                 })}
+                selectedGenres={[]}
+                nonSelectedGenres={nonSelectedGenres}
             />
         </>
     );

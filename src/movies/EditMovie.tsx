@@ -1,11 +1,13 @@
 import { useParams } from "react-router-dom";
 import MovieForm from "./MovieForm";
 import * as Yup from 'yup';
+import { genreDTO } from '../genres/genres.model';
+import { movieCreationDTO } from './movies.model';
 
 export default function EditMovie() {
 
     const { id }: any = useParams();
-    const theModel = {
+    const theModel: movieCreationDTO = {
         title: 'Toy Story',
         inTheaters: false,
         trailer: 'Andy s favourite toy, Woody, is worried that after Andy receives his birthday gift, a new toy called Buzz Lightyear, his importance may get reduced.He thus hatches a plan to eliminate Buzz.',
@@ -13,6 +15,9 @@ export default function EditMovie() {
         poster: undefined,
         posterURL: 'https://upload.wikimedia.org/wikipedia/en/thumb/1/13/Toy_Story.jpg/220px-Toy_Story.jpg'
     }
+
+    const nonSelectedGenre: genreDTO[] = [{ id: 1, name: 'Comedy' }, { id: 2, name: 'Drama' }];
+    const selectedGenre: genreDTO[] = [{ id: 3, name: 'action' }];
 
     return (
         <>
@@ -34,6 +39,8 @@ export default function EditMovie() {
                         (files: FileList) => files?.length > 0)
                 })}
                 dateStringFormat={'en-CA'}
+                nonSelectedGenres={nonSelectedGenre}
+                selectedGenres={selectedGenre}
             />
         </>
     );
