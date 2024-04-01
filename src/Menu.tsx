@@ -31,8 +31,8 @@ export default function Menu() {
                             </NavLink>
                         </li>
                         <li className="nav-item">
-                            <NavLink className="nav-link" to="/movietheaters">
-                                Movie Theaters
+                            <NavLink className="nav-link" to="/movies/create">
+                                Create Movie
                             </NavLink>
                         </li>
                     </ul>
