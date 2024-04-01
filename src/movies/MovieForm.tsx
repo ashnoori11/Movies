@@ -10,6 +10,8 @@ import MultipleSelector, { multipleSelectorModel } from "../foms/MultipleSelecto
 import { useState } from "react";
 import { genreDTO } from '../genres/genres.model';
 import { movieTheatersDTO } from '../movietheaters/movieTheater.model';
+import TypeAheadActors from "../foms/TypeAheadActors";
+import { actorMovieDTO } from "../actors/actors.model";
 
 export default function MovieForm(props: movieFormProps) {
 
@@ -19,6 +21,7 @@ export default function MovieForm(props: movieFormProps) {
     const [selectedMovieTheaters, setSelectedMovieTheaters] = useState(mapToModel(props.selectedGenres));
     const [nonSelectedMovieTheaters, setNonSelectedMovieTheaters] = useState(mapToModel(props.nonSelectedMovieTheaters));
 
+    const [selectedActors, setSelectedActors] = useState(props.selectedActors);
 
     function mapToModel(items: { id: number, name: string }[]): multipleSelectorModel[] {
 
@@ -61,6 +64,31 @@ export default function MovieForm(props: movieFormProps) {
                             setNonSelectedMovieTheaters(nonSelected);
                         }} />
 
+                    <TypeAheadActors actors={selectedActors} displayName="Actors"
+                        onAdd={actors => {
+                            setSelectedActors(actors);
+                        }}
+                        listUI={(actor: actorMovieDTO) =>
+                            <>
+                                {actor.name} / <input placeholder="Character" type="text"
+                                    value={actor.charcter}
+                                    onChange={e => {
+                                        const index = selectedActors.findIndex(x => x.id === actor.id);
+
+                                        const actors = [...selectedActors];
+                                        actors[index].charcter = e.currentTarget.value;
+                                        setSelectedActors(actors);
+                                    }}
+
+                                />
+                            </>
+                        }
+                        onRemove={actor => {
+                            const actors = selectedActors.filter(x => x !== actor);
+                            setSelectedActors(actors);
+                        }}
+                    />
+
                     <Button disabled={formikProps.isSubmitting} type="submit" className="btn btn-primary mb-3">
                         Save Changes
                     </Button>
@@ -80,6 +108,7 @@ interface movieFormProps {
     nonSelectedGenres: genreDTO[];
     nonSelectedMovieTheaters: movieTheatersDTO[];
     selectedMovieTheaters: movieTheatersDTO[];
+    selectedActors: actorMovieDTO[];
 }
 
 MovieForm.defaultProps = {

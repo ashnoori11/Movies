@@ -49,6 +49,7 @@ export default function EditMovie() {
                 selectedGenres={selectedGenre}
                 selectedMovieTheaters={selectedMovieTheaters}
                 nonSelectedMovieTheaters={nonSelectedMovieTheaters}
+                selectedActors={[{ id: 3, name: 'Eiza González', charcter: 'Auggie Salazar', picture: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages.wallpapersden.com%2Fimage%2Fdownload%2Feiza-gonzalez-variety-latino-portraits-2018_a2ZuZmqUmZqaraWkpJRoZmlurWZsa2s.jpg&f=1&nofb=1&ipt=2103f9c40ad8adf9670d2827548a73885339afe8850846bdd4947b69d0324cea&ipo=images' }]}
             />
         </>
     );
