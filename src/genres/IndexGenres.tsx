@@ -14,7 +14,7 @@ export default function IndexGenres() {
     // })
 
     useEffect(() => {
-        axios.get('https://localhost:7094/WeatherForecast')
+        axios.get('/WeatherForecast')
             .then((response: AxiosResponse<any>) => {
                 console.log(response.data);
             })
