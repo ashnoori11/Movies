@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { genreDTO } from "./genres.model";
+import { urlGenres } from "../endpoints";
 
 
 export default function IndexGenres() {
@@ -14,7 +15,7 @@ export default function IndexGenres() {
     // })
 
     useEffect(() => {
-        axios.get('/WeatherForecast')
+        axios.get(urlGenres)
             .then((response: AxiosResponse<any>) => {
                 console.log(response.data);
             })
