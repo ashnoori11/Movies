@@ -6,6 +6,7 @@ import { urlGenres } from "../endpoints";
 import GenericList from "../utils/GenericList";
 import Button from "../utils/Button";
 import Pagination from "../utils/Pagination";
+import RecordsPerPageSelect from "../utils/RecordsPerPageSelect";
 
 
 export default function IndexGenres() {
@@ -19,7 +20,7 @@ export default function IndexGenres() {
 
     const [genres, setGenres] = useState<genreDTO[]>();
     const [totalAmountOfPages, setTotalAmountOfPages] = useState(0);
-    const [recordsPerPage, setRecordsPerPage] = useState(1);
+    const [recordsPerPage, setRecordsPerPage] = useState(5);
     const [page, setPage] = useState(1);
 
     useEffect(() => {
@@ -31,16 +32,19 @@ export default function IndexGenres() {
                 // const totalAmountOfrecords = parseInt(response.headers['totalAmountOfRecords']);
                 const totalAmountOfrecords = response.data.totalCount;
                 setTotalAmountOfPages(Math.ceil(totalAmountOfrecords / recordsPerPage));
-
                 setGenres(response.data.data);
-                console.log(response.data.data);
             })
-    }, [page,recordsPerPage])
+    }, [page, recordsPerPage])
 
     return (
         <>
             <h3>Genres</h3>
             <Link className="btn btn-primary" to="/genres/create">Create Genre</Link>
+
+            <RecordsPerPageSelect onChange={amountOfRecord => {
+                setRecordsPerPage(amountOfRecord);
+                setPage(1);
+            }} />
 
             <Pagination
                 currentPage={page}
