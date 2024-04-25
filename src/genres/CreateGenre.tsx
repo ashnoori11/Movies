@@ -17,7 +17,7 @@ export default function CreateGenre() {
             await axios.post(urlGenres, genre);
             history.push('/genres');
         }
-        catch (error) {
+        catch (error: any) {
 
             if (error && error.response) {
                 setErrors(error.response.data);

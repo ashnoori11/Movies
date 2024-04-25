@@ -1,7 +1,6 @@
 import { Typeahead } from 'react-bootstrap-typeahead';
 import { actorMovieDTO } from '../actors/actors.model';
 import { ReactElement, useState } from 'react';
-import { idText } from 'typescript';
 
 
 export default function TypeAheadActors(props: typeAheadActorsProps) {
@@ -50,6 +49,7 @@ export default function TypeAheadActors(props: typeAheadActorsProps) {
                     console.log(actors);
                 }}
                 options={actors}
+                // @ts-ignore
                 labelKey={actor => actor.name}
                 filterBy={['name']}
                 placeholder='Write the name of the actor...'
@@ -58,6 +58,7 @@ export default function TypeAheadActors(props: typeAheadActorsProps) {
                 selected={selected}
                 renderMenuItemChildren={actor => (
                     <>
+                        // @ts-ignore
                         <img alt="actor" src={actor.picture}
                             style={{
                                 height: '64px',
