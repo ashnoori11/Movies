@@ -16,15 +16,19 @@ export default function IndexEntity<T>(props: indexEntityProps<T>) {
     const [page, setPage] = useState(1);
 
     const loadData = (): void => {
-        axios.get(props.url, {
-            params: { PageNumber: page, PageSize: recordsPerPage }
-        })
-            .then((response: AxiosResponse<any>) => {
-
-                const totalAmountOfrecords = response.data.totalCount;
-                setTotalAmountOfPages(Math.ceil(totalAmountOfrecords / recordsPerPage));
-                setData(response.data.data);
+        try {
+            axios.get(props.url, {
+                params: { PageNumber: page, PageSize: recordsPerPage }
             })
+                .then((response: AxiosResponse<any>) => {
+
+                    const totalAmountOfrecords = response.data.totalCount;
+                    setTotalAmountOfPages(Math.ceil(totalAmountOfrecords / recordsPerPage));
+                    setData(response.data.data);
+                })
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     useEffect(() => {
@@ -60,7 +64,7 @@ export default function IndexEntity<T>(props: indexEntityProps<T>) {
     return (
 
         <>
-            <h3>props.title</h3>
+            <h3>{props.title}</h3>
             <Link className={props.createNewLinkClasses} to={props.createNewUrl}>{props.createNewLinkText}</Link>
 
             <RecordsPerPageSelect onChange={amountOfRecord => {

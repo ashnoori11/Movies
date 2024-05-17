@@ -16,13 +16,26 @@ export default function EditEntity<T, TRead>(props: editEntityProps<T, TRead>) {
         axios.get(`${props.url}/${id}`)
             .then((response: AxiosResponse<any>) => {
 
+                console.log(response.data.data[0]);
                 setEntity(response.data.data[0]);
             })
     }, [id]);
 
     const edit = async (entityToEdit: T) => {
         try {
-            await axios.put(`${props.url}/${id}`, entityToEdit);
+
+            if (props.transformFormData) {
+                const formData = props.transformFormData(entityToEdit);
+                await axios({
+                    method: 'put',
+                    url: `${props.url}/${id}`,
+                    data: formData,
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                });
+            }
+            else {
+                await axios.put(`${props.url}/${id}`, entityToEdit);
+            }
             history.push(props.returnUrl);
         }
         catch (error) {
@@ -39,9 +52,7 @@ export default function EditEntity<T, TRead>(props: editEntityProps<T, TRead>) {
     return (
         <>
             <h3>{props.entityName}</h3>
-
             <DisplayErrors errors={errors} />
-
             {entity ? props.children(entity, edit) : <Loading />}
         </>
     );
@@ -50,10 +61,11 @@ export default function EditEntity<T, TRead>(props: editEntityProps<T, TRead>) {
 
 interface editEntityProps<T, TRead> {
     url: string;
-    transform(entity: TRead): T;
     entityName: string;
-    children(entity: T, edit: (entity: T) => void): ReactElement;
     returnUrl: string;
+    transform(entity: TRead): T;
+    transformFormData?(model: T): FormData;
+    children(entity: T, edit: (entity: T) => void): ReactElement;
 }
 
 EditEntity.defaultProps = {

@@ -12,13 +12,12 @@ export default function DateField(props: dateFieldsProps) {
             <div className="col-md-11">
                 <input className={`form-control ${props.className}`}
                     type="date" id={props.field} name={props.field}
-                    defaultValue={values[props.field]?.toLocaleDateString(props.dateStringFormat)}
+                    defaultValue={new Date(values[props.field]).toLocaleDateString(props.dateStringFormat)}
                     onChange={e => {
                         const date = new Date(`${e.currentTarget.value}T00:00:00`);
                         values[props.field] = date;
                         validateForm();
                     }}
-                    onMouseDown={() => { console.log(values[props.field]?.toLocaleDateString(props.dateStringFormat)) }}
                 />
                 {
                     touched[props.field] && errors[props.field] ?
@@ -37,5 +36,6 @@ interface dateFieldsProps {
 }
 
 DateField.defaultProps = {
-    className: ''
+    className: '',
+    dateStringFormat: 'en-US'
 }

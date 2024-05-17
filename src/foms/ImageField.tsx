@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { toBase64 } from '../helpers/fileHelpers';
 import { FormikContext, useFormikContext } from "formik";
 
@@ -29,6 +29,35 @@ export default function ImageField(props: imageFieldProps) {
         }
     }
 
+
+    const [imageSrc, setImageSrc] = useState('');
+
+    useEffect(() => {
+        const getImage = async () => {
+
+            debugger
+
+            if (props.imageUrl) {
+                try {
+                    const response = await fetch(props.imageUrl);
+                    if (response.ok) {
+                        const blob = await response.blob();
+                        const objectURL = URL.createObjectURL(blob);
+                        setImageSrc(objectURL);
+                    } else {
+                        console.error('Failed to fetch image');
+                    }
+                } catch (error) {
+                    console.error('Error fetching image:', error);
+                }
+            }
+        };
+
+        getImage();
+
+        return () => URL.revokeObjectURL(imageSrc);
+    }, [imageUrl]);
+
     return (
 
         <div className="row col-md-12 mb-3">
@@ -51,7 +80,10 @@ export default function ImageField(props: imageFieldProps) {
                     <div style={divStyle}>
                         <img style={imageStyle} src={imageUrl} className="img-thumbnail rounded" alt="selcted image" />
                     </div>
-                </div> : null
+                </div> : imageSrc ?
+                    <div style={divStyle}>
+                        {imageSrc && <img style={imageStyle} src={imageSrc} alt="Image" className="img-thumbnail rounded" />}
+                    </div> : null
             }
         </div>
     );

@@ -59,7 +59,11 @@ export default function TypeAheadActors(props: typeAheadActorsProps) {
                 renderMenuItemChildren={actor => (
                     <>
                         // @ts-ignore
-                        <img alt="actor" src={actor.picture}
+                        <img alt="actor"
+
+                            // @ts-ignore
+                            src={actor.picture}
+
                             style={{
                                 height: '64px',
                                 marginRight: '10px',
@@ -67,7 +71,12 @@ export default function TypeAheadActors(props: typeAheadActorsProps) {
                             }}
                             className="rounded"
                         />
-                        <span>{actor.name}</span>
+                        <span>
+                            {
+                                // @ts-ignore
+                                actor.name
+                            }
+                        </span>
                     </>
                 )}
             />
