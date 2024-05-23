@@ -9,6 +9,7 @@ import { convertActorToFormData } from "../utils/FormDataUtils";
 export default function EditActor() {
 
     const transform = (actor: actorDTO): actorCreationDTO => {
+
         return {
             name: actor.name,
             pictureUrl: actor.biography,

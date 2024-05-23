@@ -34,10 +34,7 @@ export default function ImageField(props: imageFieldProps) {
 
     useEffect(() => {
         const getImage = async () => {
-
-            debugger
-
-            if (props.imageUrl) {
+            if (props.imageUrl && !imageBase64) {
                 try {
                     const response = await fetch(props.imageUrl);
                     if (response.ok) {
@@ -72,11 +69,7 @@ export default function ImageField(props: imageFieldProps) {
                     <div style={divStyle}>
                         <img style={imageStyle} src={imageBase64} className="img-thumbnail rounded" alt="selcted image" />
                     </div>
-                </div> : null
-            }
-
-            {
-                imageUrl ? <div>
+                </div> : imageUrl ? <div>
                     <div style={divStyle}>
                         <img style={imageStyle} src={imageUrl} className="img-thumbnail rounded" alt="selcted image" />
                     </div>
@@ -85,6 +78,17 @@ export default function ImageField(props: imageFieldProps) {
                         {imageSrc && <img style={imageStyle} src={imageSrc} alt="Image" className="img-thumbnail rounded" />}
                     </div> : null
             }
+
+            {/* {
+                imageUrl ? <div>
+                    <div style={divStyle}>
+                        <img style={imageStyle} src={imageUrl} className="img-thumbnail rounded" alt="selcted image" />
+                    </div>
+                </div> : imageSrc ?
+                    <div style={divStyle}>
+                        {imageSrc && <img style={imageStyle} src={imageSrc} alt="Image" className="img-thumbnail rounded" />}
+                    </div> : null
+            } */}
         </div>
     );
 }

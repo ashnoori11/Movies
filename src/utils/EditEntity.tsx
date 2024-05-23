@@ -15,17 +15,24 @@ export default function EditEntity<T, TRead>(props: editEntityProps<T, TRead>) {
     useEffect(() => {
         axios.get(`${props.url}/${id}`)
             .then((response: AxiosResponse<any>) => {
-
-                console.log(response.data.data[0]);
                 setEntity(response.data.data[0]);
             })
+
+        // let myPromise = new Promise((r) => {
+        //     setTimeout(r, 5000);
+        //     console.log(entity);
+        // });
+
+
     }, [id]);
 
     const edit = async (entityToEdit: T) => {
+
         try {
 
             if (props.transformFormData) {
                 const formData = props.transformFormData(entityToEdit);
+
                 await axios({
                     method: 'put',
                     url: `${props.url}/${id}`,

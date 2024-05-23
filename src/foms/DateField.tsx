@@ -3,6 +3,19 @@ import { useFormikContext } from "formik";
 export default function DateField(props: dateFieldsProps) {
 
     const { values, validateForm, touched, errors } = useFormikContext<any>();
+    const dateFormat = (date: string): string => {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+
+        return [year, month, day].join('/');
+    }
 
     return (
         <div className="row col-md-12 mb-3">
@@ -13,6 +26,8 @@ export default function DateField(props: dateFieldsProps) {
                 <input className={`form-control ${props.className}`}
                     type="date" id={props.field} name={props.field}
                     defaultValue={new Date(values[props.field]).toLocaleDateString(props.dateStringFormat)}
+                    key={`${Math.floor((Math.random() * 1000))}-min`}
+
                     onChange={e => {
                         const date = new Date(`${e.currentTarget.value}T00:00:00`);
                         values[props.field] = date;
