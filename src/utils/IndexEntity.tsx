@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useReducer, useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "./Button";
 import customConfirm from "./customConfirm";
@@ -14,6 +14,7 @@ export default function IndexEntity<T>(props: indexEntityProps<T>) {
     const [totalAmountOfPages, setTotalAmountOfPages] = useState(0);
     const [recordsPerPage, setRecordsPerPage] = useState(5);
     const [page, setPage] = useState(1);
+
 
     const loadData = (): void => {
         try {
@@ -39,14 +40,18 @@ export default function IndexEntity<T>(props: indexEntityProps<T>) {
 
     const deleteData = async (id: number) => {
         try {
-            await axios.delete(`${props.url}/${id}`);
-            loadData();
+            await axios.delete(`${props.url}/${id}`)
+                .then(response => {
+                    loadData();
+                })
+                .catch(error => {
+                    if (error && error.response) {
+                        console.error(error.response.data);
+                    }
+                });
 
-        } catch (error: any) {
-
-            if (error && error.response) {
-                console.error(error.response.data);
-            }
+        } catch (error) {
+            console.log(error);
         }
     }
 

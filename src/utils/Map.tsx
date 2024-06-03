@@ -1,10 +1,10 @@
 import { MapContainer, TileLayer, useMapEvent, Marker } from "react-leaflet";
-import L from 'leaflet';
+import L, { Popup } from 'leaflet';
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import 'leaflet/dist/leaflet.css';
 import coordinateDTO from './coordinate.model';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 let defaultIcon = L.icon({
     iconUrl: icon,
@@ -33,8 +33,10 @@ export default function Map(props: mapProps) {
                 props.handleMapClick(coordinates);
             }} />
 
-            {coordinates.map((coordinate, index) => <Marker key={`${coordinate.lat}${coordinate.lng}${index}`}
-                position={[coordinate.lat, coordinate.lng]} />)}
+            {coordinates.map((coordinate, index) =>
+                <Marker key={`${coordinate.lat}${coordinate.lng}${index}`}
+                    position={[coordinate.lat, coordinate.lng]}>
+                </Marker>)}
         </MapContainer>
     );
 }

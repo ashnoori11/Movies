@@ -1,5 +1,5 @@
 import { Form, Formik, FormikHelpers } from "formik";
-import { movieTheaterCreationDTO } from "./movieTheater.model";
+import { movieTheaterCreationDTO } from './movieTheater.model';
 import TextField from "../foms/TextField";
 import Button from "../utils/Button";
 import { Link } from "react-router-dom";
