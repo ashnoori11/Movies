@@ -10,29 +10,21 @@ export default function EditMovieTheaters() {
     const { id }: any = useParams();
     return (
         <EditEntity<movieTheaterCreationDTO, movieTheatersDTO>
-
             url={urlMovieTheaters}
             returnUrl="/movietheaters"
             entityName="Movie Theater"
         >
-
-            {(entity, edit) =>
-
+            {(entity, edit) => (
                 <MovieTheaterForm
-
                     model={entity}
-                    onSubmit={async values => await edit(values)}
+                    onSubmit={edit}
                     validationSchema={Yup.object({
                         name: Yup.string()
-                            .required('this is field is required')
+                            .required('This field is required')
                             .firstLetterUppercase()
                     })}
-                >
-
-                </MovieTheaterForm>
-
-            }
-
+                />
+            )}
         </EditEntity>
     );
 }

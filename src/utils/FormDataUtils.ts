@@ -1,4 +1,6 @@
+import { json } from "stream/consumers";
 import { actorCreationDTO } from "../actors/actors.model";
+import { movieCreationDTO } from "../movies/movies.model";
 
 
 export function convertActorToFormData(actor: actorCreationDTO): FormData {
@@ -22,6 +24,32 @@ export function convertActorToFormData(actor: actorCreationDTO): FormData {
     return formData;
 }
 
+export function convertMovieFormData(movie: movieCreationDTO) {
+    const formData = new FormData();
+
+    formData.append('title', movie.title);
+
+    if (movie.summery) {
+        formData.append('summery', movie.summery);
+    }
+
+    formData.append('trailer', movie.trailer);
+    formData.append('inTheaters', String(movie.inTheaters));
+
+    if (movie.releaseDate) {
+        formData.append('releaseDate', formatDate(movie.releaseDate));
+    }
+
+    if (movie.poster) {
+        formData.append('poster', movie.poster);
+    }
+
+    formData.append('genreIds', JSON.stringify(movie.genreIds));
+    formData.append('movieTheaterIds', JSON.stringify(movie.movieTheaterIds));
+    formData.append('actors', JSON.stringify(movie.actors));
+
+    return formData;
+}
 
 const formatDate = (date: Date): string => {
     date = new Date();

@@ -1,10 +1,69 @@
 import MovieForm from "./MovieForm";
 import * as Yup from 'yup';
 import { genreDTO } from '../genres/genres.model';
-import { movieCreationDTO } from './movies.model';
+import { movieCreationDTO, movieFormInformation } from './movies.model';
 import { movieTheatersDTO } from '../movietheaters/movieTheater.model';
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { urlMovies } from "../endpoints";
+import DisplayErrors from "../utils/DisplayErrors";
+import { AxiosResponse } from 'axios';
+import Loading from "../utils/Loading";
+import { convertMovieFormData } from "../utils/FormDataUtils";
+import { useHistory } from "react-router-dom";
 
 export default function CreateMovie() {
+
+    const [errors, setErrors] = useState<string[]>([]);
+    const [nonSelectedGenres, setNonSelectedGenres] = useState<genreDTO[]>([]);
+    const [nonSelectedMovieTheaters, setNonSelectedMovieTheaters] = useState<movieTheatersDTO[]>([]);
+    const [loading, setLoading] = useState(true);
+    const history = useHistory();
+
+    useEffect(() => {
+        try {
+            axios.get(`${urlMovies}/MovieFormInformations`)
+                .then((response: AxiosResponse<movieFormInformation>) => {
+
+                    // @ts-ignore
+                    let actualData = response.data[0];
+
+                    setNonSelectedGenres(actualData.genres);
+                    setNonSelectedMovieTheaters(actualData.movieTheaters);
+                    setLoading(false);
+
+                }).catch(errors => {
+                    setErrors(errors.response.data);
+                });
+        }
+        catch (e) {
+            console.error(e);
+        }
+    }, [])
+
+    const create = async (movie: movieCreationDTO) => {
+        try {
+            const formData = convertMovieFormData(movie);
+
+            await axios({
+                method: 'post',
+                url: urlMovies,
+                data: formData,
+                headers: { 'Content-Type': 'multipart/form-data' }
+            })
+                .then(response => {
+                    history.push(`/movies/${response.data.data}`);
+                })
+                .catch(errors => {
+                    if (errors.response.data) {
+                        setErrors(errors.response.data);
+                    }
+                });
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
 
     const theModel: movieCreationDTO = {
         title: '',
@@ -15,38 +74,29 @@ export default function CreateMovie() {
         posterURL: undefined
     }
 
-    const nonSelectedGenres: genreDTO[] =
-        [{ id: 1, name: 'Comedy' }, { id: 2, name: 'Drama' }, { id: 3, name: 'action' }]
-
-    const nonSelectedMovieTheaters: movieTheatersDTO[] =
-        [{ id: 1, name: 'somePlaceOne' }, { id: 2, name: 'somePlaceTwo' }, { id: 3, name: 'somePlaceThree' }]
-
     return (
         <>
             <h3>Create Movie</h3>
-            <MovieForm
-                model={{ ...theModel }}
-                onSubmit={async (values, actions) => {
 
-                    await new Promise(r => setTimeout(r, 3000));
-                    console.log(values);
-                }}
-                validationSchema={Yup.object({
-                    title: Yup.string()
-                        .required('this field is required')
-                        .firstLetterUppercase()
-                    //     ,
-                    // poster: Yup.mixed().test(
-                    //     "required",
-                    //     "Please select a file",
-                    //     (files: FileList) => files?.length > 0)
-                })}
-                selectedGenres={[]}
-                nonSelectedGenres={nonSelectedGenres}
-                selectedMovieTheaters={[]}
-                nonSelectedMovieTheaters={nonSelectedMovieTheaters}
-                selectedActors={[]}
-            />
+            {loading ? <Loading /> : errors.length > 1 ? <DisplayErrors errors={errors} /> :
+                <MovieForm
+                    model={{ ...theModel }}
+                    onSubmit={async (values, actions) => {
+
+                        await create(values);
+                    }}
+                    validationSchema={Yup.object({
+                        title: Yup.string()
+                            .required('this field is required')
+                            .firstLetterUppercase()
+                    })}
+                    selectedGenres={[]}
+                    nonSelectedGenres={nonSelectedGenres}
+                    selectedMovieTheaters={[]}
+                    nonSelectedMovieTheaters={nonSelectedMovieTheaters}
+                    selectedActors={[]}
+                />
+            }
         </>
     );
 }

@@ -12,6 +12,7 @@ import { genreDTO } from '../genres/genres.model';
 import { movieTheatersDTO } from '../movietheaters/movieTheater.model';
 import TypeAheadActors from "../foms/TypeAheadActors";
 import { actorMovieDTO } from "../actors/actors.model";
+import MarkdownField from "../foms/MarkdownField";
 
 export default function MovieForm(props: movieFormProps) {
 
@@ -49,6 +50,12 @@ export default function MovieForm(props: movieFormProps) {
                     <DateField displayName="Release" field="releaseDate" dateStringFormat={props.dateStringFormat} />
                     <ImageField displayName="Poster" field="poster" imageUrl={props.model.posterURL} />
 
+                    <MarkdownField
+
+                        displayName="Summery"
+                        field="summery"
+                    />
+
                     <MultipleSelector displayName="Genres"
                         nonSelected={nonSelectedGenres}
                         selected={selectedGenres}
@@ -72,12 +79,12 @@ export default function MovieForm(props: movieFormProps) {
                         listUI={(actor: actorMovieDTO) =>
                             <>
                                 {actor.name} / <input placeholder="Character" type="text"
-                                    value={actor.charcter}
+                                    value={actor.character}
                                     onChange={e => {
                                         const index = selectedActors.findIndex(x => x.id === actor.id);
 
                                         const actors = [...selectedActors];
-                                        actors[index].charcter = e.currentTarget.value;
+                                        actors[index].character = e.currentTarget.value;
                                         setSelectedActors(actors);
                                     }}
 
