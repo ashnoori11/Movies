@@ -13,6 +13,7 @@ import EditMovie from './movies/EditMovie';
 import FilterMovies from './movies/FilterMovies';
 import React, { ReactComponentElement } from 'react';
 import RedirectToLandingPage from './utils/RedirectToLandingPage';
+import MovieDetails from './movies/MovieDetails';
 
 interface Route {
     path: string;
@@ -37,6 +38,7 @@ const routes: Route[] = [
     { path: '/movies/create', component: CreateMovie },
     { path: '/movies/edit/:id(\\d+)', component: EditMovie },
     { path: '/movies/filter', component: FilterMovies },
+    { path: '/movie/:id(\\d+)', component: MovieDetails },
 
     { path: '/', component: LandingPage, exact: true },
     { path: '*', component: RedirectToLandingPage }

@@ -7,6 +7,13 @@ export interface movieDTO {
     title: string,
     poster: string,
 
+    inTheaters: boolean;
+    trailer: string;
+    summery?: string;
+    releaseDate: Date;
+    genres: genreDTO[];
+    movieTheaters: movieTheatersDTO[];
+    actors: actorMovieDTO[];
 }
 
 export interface movieCreationDTO {
