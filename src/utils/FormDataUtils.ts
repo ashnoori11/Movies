@@ -1,4 +1,3 @@
-import { json } from "stream/consumers";
 import { actorCreationDTO } from "../actors/actors.model";
 import { movieCreationDTO } from "../movies/movies.model";
 
@@ -52,7 +51,6 @@ export function convertMovieFormData(movie: movieCreationDTO) {
 }
 
 const formatDate = (date: Date): string => {
-    date = new Date();
     const format = new Intl.DateTimeFormat('en', {
         year: 'numeric',
         month: '2-digit',

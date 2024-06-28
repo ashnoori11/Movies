@@ -120,5 +120,5 @@ interface movieFormProps {
 }
 
 MovieForm.defaultProps = {
-    dateStringFormat: 'zh-Hans-CN'
+    dateStringFormat: 'en-US'
 }

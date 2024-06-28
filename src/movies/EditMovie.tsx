@@ -40,14 +40,8 @@ export default function EditMovie() {
                     console.log(`the id is ${id}`);
                 }}
                 validationSchema={Yup.object({
-                    title: Yup.string()
-                        .required('this field is required')
-                        .firstLetterUppercase()
-                    //     ,
-                    // poster: Yup.mixed().test(
-                    //     "required",
-                    //     "Please select a file",
-                    //     (files: FileList) => files?.length > 0)
+                    //@ts-ignore
+                    title: Yup.string().required('this field is required').firstLetterUppercase()
                 })}
                 dateStringFormat={'en-CA'}
                 nonSelectedGenres={nonSelectedGenre}

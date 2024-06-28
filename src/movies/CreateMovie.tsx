@@ -83,12 +83,15 @@ export default function CreateMovie() {
                     model={{ ...theModel }}
                     onSubmit={async (values, actions) => {
 
+                        console.log(values);
+
+                        console.log(values);
+
                         await create(values);
                     }}
                     validationSchema={Yup.object({
-                        title: Yup.string()
-                            .required('this field is required')
-                            .firstLetterUppercase()
+                        //@ts-ignore
+                        title: Yup.string().required('this field is required').firstLetterUppercase()
                     })}
                     selectedGenres={[]}
                     nonSelectedGenres={nonSelectedGenres}
