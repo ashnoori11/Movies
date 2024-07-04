@@ -19,7 +19,7 @@ export default function MovieForm(props: movieFormProps) {
     const [selectedGenres, setSelectedGenres] = useState(mapToModel(props.selectedGenres));
     const [nonSelectedGenres, setNonSelectedGenres] = useState(mapToModel(props.nonSelectedGenres));
 
-    const [selectedMovieTheaters, setSelectedMovieTheaters] = useState(mapToModel(props.selectedGenres));
+    const [selectedMovieTheaters, setSelectedMovieTheaters] = useState(mapToModel(props.selectedMovieTheaters));
     const [nonSelectedMovieTheaters, setNonSelectedMovieTheaters] = useState(mapToModel(props.nonSelectedMovieTheaters));
 
     const [selectedActors, setSelectedActors] = useState(props.selectedActors);
