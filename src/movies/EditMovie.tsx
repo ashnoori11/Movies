@@ -1,55 +1,102 @@
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import MovieForm from "./MovieForm";
 import * as Yup from 'yup';
-import { genreDTO } from '../genres/genres.model';
-import { movieCreationDTO } from './movies.model';
-import { movieTheatersDTO } from '../movietheaters/movieTheater.model';
-import { actorMovieDTO } from '../actors/actors.model';
+import { movieCreationDTO, moviesPutGetDTO } from './movies.model';
+import { useEffect, useState } from "react";
+import axios, { AxiosResponse } from "axios";
+import { urlMovies } from "../endpoints";
+import { convertMovieFormData } from "../utils/FormDataUtils";
+import DisplayErrors from "../utils/DisplayErrors";
+import Loading from "../utils/Loading";
 
 export default function EditMovie() {
 
     const { id }: any = useParams();
-    const theModel: movieCreationDTO = {
-        title: 'Toy Story',
-        inTheaters: false,
-        trailer: 'Andy s favourite toy, Woody, is worried that after Andy receives his birthday gift, a new toy called Buzz Lightyear, his importance may get reduced.He thus hatches a plan to eliminate Buzz.',
-        releaseDate: new Date('1995-02-22'),
-        poster: undefined,
-        posterURL: 'https://upload.wikimedia.org/wikipedia/en/thumb/1/13/Toy_Story.jpg/220px-Toy_Story.jpg'
+    const [movie, setMovie] = useState<movieCreationDTO>();
+    const [moviePutGet, setMoviePutGet] = useState<moviesPutGetDTO>();
+    const [errors, setErrors] = useState<string[]>([]);
+    const history = useHistory();
+
+    useEffect(() => {
+
+        try {
+
+            axios.get(`${urlMovies}/GetMovieDetailsForEdit/${id}`)
+                .then((response: AxiosResponse<moviesPutGetDTO>) => {
+
+                    //@ts-ignore
+                    let theData: moviesPutGetDTO = response.data.data[0];
+                    console.log(theData);
+                    console.log(response);
+
+                    const model: movieCreationDTO = {
+                        title: theData.title,
+                        inTheaters: theData.inTheaters,
+                        trailer: theData.trailer,
+                        summery: theData.summery,
+                        releaseDate: new Date(theData.releaseDate),
+                        posterURL: theData.posterURL,
+                    }
+
+                    setMovie(model);
+                    setMoviePutGet(theData);
+
+                })
+                .catch(errors => {
+                    if (errors) {
+                        setErrors(errors.response.data);
+                    }
+                });
+
+        } catch (e) {
+            console.log(e);
+        }
+
+    }, [id])
+
+    const edit = async (movieToEdit: movieCreationDTO) => {
+        try {
+            const formData = convertMovieFormData(movieToEdit);
+            await axios({
+                method: 'put',
+                url: `${urlMovies}/${id}`,
+                data: formData,
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+
+            history.push(`/movie/${id}`);
+        }
+        catch (errors) {
+
+            //@ts-ignore
+            setErrors(errors.response.data);
+        }
     }
-
-    const nonSelectedGenre: genreDTO[] = [{ id: 1, name: 'Comedy' }, { id: 2, name: 'Drama' }];
-    const selectedGenre: genreDTO[] = [{ id: 3, name: 'action' }];
-
-    const nonSelectedMovieTheaters: movieTheatersDTO[] = [{ id: 1, name: 'SomeWhereOne' }, { id: 2, name: 'SomeWhereTwo' }];
-    const selectedMovieTheaters: movieTheatersDTO[] = [{ id: 3, name: 'SomeWhereThree' }];
-
-    const selectedActors: actorMovieDTO[] = [
-        { id: 3, name: 'Eiza González', character: 'Auggie Salazar', picture: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimages.wallpapersden.com%2Fimage%2Fdownload%2Feiza-gonzalez-variety-latino-portraits-2018_a2ZuZmqUmZqaraWkpJRoZmlurWZsa2s.jpg&f=1&nofb=1&ipt=2103f9c40ad8adf9670d2827548a73885339afe8850846bdd4947b69d0324cea&ipo=images' }
-    ];
 
     return (
         <>
             <h3>Edit Movie</h3>
-            <MovieForm
-                model={{ ...theModel }}
+            <DisplayErrors errors={errors} />
+
+            {movie && moviePutGet ? <MovieForm
+                model={movie}
                 onSubmit={async (values, actions) => {
 
-                    await new Promise(r => setTimeout(r, 3000));
-                    console.log(values);
-                    console.log(`the id is ${id}`);
+                    await edit(values);
                 }}
                 validationSchema={Yup.object({
                     //@ts-ignore
                     title: Yup.string().required('this field is required').firstLetterUppercase()
                 })}
                 dateStringFormat={'en-CA'}
-                nonSelectedGenres={nonSelectedGenre}
-                selectedGenres={selectedGenre}
-                selectedMovieTheaters={selectedMovieTheaters}
-                nonSelectedMovieTheaters={nonSelectedMovieTheaters}
-                selectedActors={selectedActors}
-            />
+                nonSelectedGenres={moviePutGet?.nonSelectedGenre}
+                selectedGenres={moviePutGet?.selectedGenre}
+                selectedMovieTheaters={moviePutGet?.selectedMovieTheaters}
+                nonSelectedMovieTheaters={moviePutGet?.nonSelectedMovieTheaters}
+                selectedActors={moviePutGet?.selectedActors}
+            /> : <Loading />}
+
+
         </>
     );
 }
