@@ -132,7 +132,7 @@ export default function MovieDetails(pros: movieDetailsProps) {
                                             display: 'inline-block',
                                             width: '200px',
                                             marginLeft: '1rem'
-                                        }}>{actor.character}</span>
+                                        }}>{actor.name}</span>
 
                                         <span style={{
                                             display: 'inline-block',
