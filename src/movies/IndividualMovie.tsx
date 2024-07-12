@@ -7,6 +7,8 @@ import axios from "axios";
 import { urlMovies } from "../endpoints";
 import { useContext, useState } from "react";
 import AlertContext from "../utils/AlertContext";
+import Authorized from "../auth/Authorized";
+import { RoleHelper } from "../helpers/RoleHelper";
 
 export default function IndividualMovie(props: movieDTO) {
 
@@ -29,13 +31,20 @@ export default function IndividualMovie(props: movieDTO) {
             <p>
                 <Link to={buildLink()}>{props.title}</Link>
             </p>
-            <div>
-                <Link style={{ marginRight: '1rem', color: 'white' }} className="btn btn-info" to={`/movies/edit/${props.id}`}>Edit</Link>
-                <Button
-                    onClick={() => customConfirm(() => deleteMovie())}
-                    className="btn btn-danger"
-                >Delete</Button>
-            </div>
+
+            <Authorized
+
+                authorized={<>
+                    <div>
+                        <Link style={{ marginRight: '1rem', color: 'white' }} className="btn btn-info" to={`/movies/edit/${props.id}`}>Edit</Link>
+                        <Button
+                            onClick={() => customConfirm(() => deleteMovie())}
+                            className="btn btn-danger"
+                        >Delete</Button>
+                    </div>
+                </>}
+                role={RoleHelper.getAdminRole()}
+            />
         </div>
     );
 }
