@@ -3,16 +3,22 @@ import Menu from './Menu';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import routes from './route-config';
 import configureValidation from './Validations';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { claim } from './auth/auth.models';
 import AuthenticationContext from './auth/AuthenticationContext';
 import { RoleHelper } from './helpers/RoleHelper';
+import { getClaims } from './auth/handleJwt';
 
 configureValidation();
 
 function App() {
 
   const [claims, setClaims] = useState<claim[]>([]);
+
+  useEffect(() => {
+    setClaims(getClaims());
+  }, [])
+
 
   const isAdmin = () => {
     return claims

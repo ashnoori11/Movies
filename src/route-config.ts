@@ -14,6 +14,8 @@ import FilterMovies from './movies/FilterMovies';
 import React, { ReactComponentElement } from 'react';
 import RedirectToLandingPage from './utils/RedirectToLandingPage';
 import MovieDetails from './movies/MovieDetails';
+import Register from './auth/Register';
+import Login from './auth/Login';
 
 interface Route {
     path: string;
@@ -40,6 +42,9 @@ const routes: Route[] = [
     { path: '/movies/edit/:id(\\d+)', component: EditMovie, isAdmin: true },
     { path: '/movies/filter', component: FilterMovies, isAdmin: false },
     { path: '/movie/:id(\\d+)', component: MovieDetails, isAdmin: false },
+
+    { path: '/register', component: Register, isAdmin: false },
+    { path: '/login', component: Login, isAdmin: false },
 
     { path: '/', component: LandingPage, exact: true, isAdmin: false },
     { path: '*', component: RedirectToLandingPage, isAdmin: false }
