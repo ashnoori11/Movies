@@ -6,6 +6,11 @@ import reportWebVitals from './reportWebVitals';
 import '../node_modules/bootstrap/dist/css/bootstrap.css';
 import { BrowserRouter } from 'react-router-dom';
 
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faStar);
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

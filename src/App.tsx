@@ -8,8 +8,10 @@ import { claim } from './auth/auth.models';
 import AuthenticationContext from './auth/AuthenticationContext';
 import { RoleHelper } from './helpers/RoleHelper';
 import { getClaims } from './auth/handleJwt';
+import configureInterceptors from './utils/httpInterceptors';
 
 configureValidation();
+configureInterceptors();
 
 function App() {
 

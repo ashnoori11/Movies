@@ -4,3 +4,4 @@ export const urlActors = `${baseUrl}/api/actors`;
 export const urlMovieTheaters = `${baseUrl}/api/movietheaters`;
 export const urlMovies = `${baseUrl}/api/movies`;
 export const urlAccounts = `${baseUrl}/api/accounts`;
+export const urlRatings = `${baseUrl}/api/ratings`;

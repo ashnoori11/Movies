@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
-import { urlMovies } from "../endpoints";
+import { urlMovies, urlRatings } from "../endpoints";
 import { movieDTO } from "./movies.model";
 import DisplayErrors from "../utils/DisplayErrors";
 import Loading from "../utils/Loading";
@@ -8,6 +8,8 @@ import { Link, useParams } from "react-router-dom";
 import ReactMarkdown from 'react-markdown';
 import coordinateDTO from '../utils/coordinate.model';
 import Map from '../utils/Map';
+import Ratings from "../utils/Ratings";
+import Swal from "sweetalert2";
 
 export default function MovieDetails(pros: movieDetailsProps) {
 
@@ -79,6 +81,30 @@ export default function MovieDetails(pros: movieDetailsProps) {
         return [];
     }
 
+    const handleRate = (rate: number) => {
+        try {
+            axios.post(`${urlRatings}`, { rating: rate, movieId: id })
+                .then(response => {
+
+                    console.log(response);
+                    if (response.status) {
+                        Swal.fire({ icon: 'success', title: 'Rating received' });
+                    }
+                    else {
+                        Swal.fire({ icon: 'error', title: 'an error occured pleas try again' });
+                    }
+
+                })
+                .catch(errors => {
+                    console.log(errors.data);
+                    Swal.fire({ icon: 'error', title: 'There is a problem and it is not possible to rate at the moment' });
+                });
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
+
     return (
         errors ? <DisplayErrors errors={errors} /> :
             movie ?
@@ -89,6 +115,8 @@ export default function MovieDetails(pros: movieDetailsProps) {
                             to={`/movie/filter?genreId=${genre.id}`} >{genre.name}</Link>
 
                     )} | {movie.releaseDate.toDateString()}
+                    | Your vote: <Ratings maximumValue={5} selectedValue={0} onChange={handleRate} />
+                    | Average Vote: {movie.averageVote}
 
                     <div style={{ display: 'flex', marginTop: '3rem' }}>
                         <span style={{ display: 'inline-block', marginRight: '1rem' }}>
