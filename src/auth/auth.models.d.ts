@@ -13,3 +13,8 @@ export interface authenticationResponse {
     expiration: Date;
     errors?: string[];
 }
+
+export interface userDTO {
+    id: string;
+    email: string;
+}

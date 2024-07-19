@@ -1,6 +1,5 @@
 import axios from "axios";
 import { getToken } from "../auth/handleJwt";
-import Authorized from '../auth/Authorized';
 
 export default function configureInterceptors() {
     axios.interceptors.request.use(

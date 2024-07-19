@@ -16,6 +16,7 @@ import RedirectToLandingPage from './utils/RedirectToLandingPage';
 import MovieDetails from './movies/MovieDetails';
 import Register from './auth/Register';
 import Login from './auth/Login';
+import IndexUsers from './auth/IndexUsers';
 
 interface Route {
     path: string;
@@ -45,6 +46,7 @@ const routes: Route[] = [
 
     { path: '/register', component: Register, isAdmin: false },
     { path: '/login', component: Login, isAdmin: false },
+    { path: '/users', component: IndexUsers, isAdmin: true },
 
     { path: '/', component: LandingPage, exact: true, isAdmin: false },
     { path: '*', component: RedirectToLandingPage, isAdmin: false }
